@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Poker Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: green;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .card {
+      width: 80px;
+      height: 120px;
+      margin: 5px;
+      background: white;
+      color: black;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .section-title {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background: #222;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Poker</h1>
+  <button onclick="deal()">Deal Cards</button>
+
+  <div class="section-title"><h2>Your Hand</h2></div>
+  <div class="cards" id="player-hand"></div>
+
+  <div class="section-title"><h2>Community Cards</h2></div>
+  <div class="cards" id="community-cards"></div>
+
+  <script>
+    const suits = ['♠', '♥', '♦', '♣'];
+    const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+    function createDeck() {
+      let deck = [];
+      for (let suit of suits) {
+        for (let value of values) {
+          deck.push(`${value}${suit}`);
+        }
+      }
+      return deck;
+    }
+
+    function shuffle(deck) {
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+    }
+
+    function deal() {
+      const deck = createDeck();
+      shuffle(deck);
+
+      const playerHand = deck.splice(0, 2);
+      const community = deck.splice(0, 5);
+
+      displayCards('player-hand', playerHand);
+      displayCards('community-cards', community);
+    }
+
+    function displayCards(containerId, cards) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      for (let card of cards) {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+        cardDiv.innerText = card;
+        container.appendChild(cardDiv);
+      }
+    }
+  </script>
+</body>
+</html>
